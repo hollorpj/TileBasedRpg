@@ -17,7 +17,7 @@ public class ImageDrawer {
 	
 	public BufferedImage generateImage(String pathToBitmap, Map<String, BufferedImage> tileset) throws IOException {
 		List<List<String>> imageSkeleton = convertBitmapToSkeleton(pathToBitmap);
-		BufferedImage picture = new BufferedImage(Constants.getTileWidth(), Constants.getTileWidth(), BufferedImage.TYPE_INT_RGB);
+		BufferedImage picture = new BufferedImage((Constants.getTileWidth() * imageSkeleton.get(0).size()), (Constants.getTileHeight() * imageSkeleton.size()) , BufferedImage.TYPE_INT_RGB);
 		
 		Image curImage;
 		int numTilesTall = imageSkeleton.size();
@@ -49,6 +49,7 @@ public class ImageDrawer {
 			}
 			
 			br.close();
+			
 			return imageSkeleton;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
