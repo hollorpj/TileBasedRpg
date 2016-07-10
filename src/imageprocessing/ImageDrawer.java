@@ -13,11 +13,15 @@ import java.util.Map;
 import model.Constants;
 
 public class ImageDrawer {
-	public ImageDrawer(){}
+	private ImageSubroutines imageSubs;
+	
+	public ImageDrawer() {
+		this.imageSubs = new ImageSubroutines();
+	}
 	
 	public BufferedImage generateImage(String pathToBitmap, Map<String, BufferedImage> tileset) throws IOException {
 		List<List<String>> imageSkeleton = convertBitmapToSkeleton(pathToBitmap);
-		BufferedImage picture = new BufferedImage((Constants.getTileWidth() * imageSkeleton.get(0).size()), (Constants.getTileHeight() * imageSkeleton.size()) , BufferedImage.TYPE_INT_RGB);
+		BufferedImage picture = new BufferedImage((Constants.getTileWidth() * imageSkeleton.get(0).size()), (Constants.getTileHeight() * imageSkeleton.size()) , BufferedImage.TYPE_INT_ARGB);
 		
 		Image curImage;
 		int numTilesTall = imageSkeleton.size();
@@ -30,6 +34,17 @@ public class ImageDrawer {
 		}
 		
 		return picture;
+	}
+	
+	public BufferedImage overlayImage(BufferedImage backdrop, BufferedImage toOverlay, int gridX, int gridY) {
+		BufferedImage copyOfBackdrop = imageSubs.copyBufferedImage(backdrop);
+		
+		int pixelX = Constants.getTileWidth() * gridX;
+		int pixelY = Constants.getTileHeight() * gridY;
+		
+		copyOfBackdrop.getGraphics().drawImage(toOverlay, pixelX, pixelY, null);
+		
+		return copyOfBackdrop;
 	}
 	
 	private List<List<String>> convertBitmapToSkeleton(String pathToBitmap) {
